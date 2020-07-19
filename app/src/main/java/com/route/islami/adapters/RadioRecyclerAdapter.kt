@@ -35,13 +35,23 @@ class RadioRecyclerAdapter() : RecyclerView.Adapter<RadioRecyclerAdapter.ViewHol
     }
 
     interface OnItemClickListener {
-        fun onItemClick(pos: Int, item: String)
+        fun onItemClick(pos: Int, item: RadioChannel)
     }
 
     var onItemClickListener: OnItemClickListener? = null
+    var onPlayClickListener: OnItemClickListener? = null
+    var onStopClickListener: OnItemClickListener? = null
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.setText(channels.get(position)?.name)
+        if (onPlayClickListener != null)
+            holder.play.setOnClickListener {
+                onPlayClickListener?.onItemClick(position, channels.get(position)!!)
+            }
+        if (onStopClickListener != null)
+            holder.stop.setOnClickListener {
+                onStopClickListener?.onItemClick(position, channels.get(position)!!)
+            }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
